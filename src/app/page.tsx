@@ -8,7 +8,7 @@ import Autoplay from 'embla-carousel-autoplay';
 export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [volume, setVolume] = useState(1);
+  // const [volume, setVolume] = useState(1);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
@@ -38,11 +38,11 @@ export default function Home() {
   //   }
   // };
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
+  // useEffect(() => {
+  //   if (audioRef.current) {
+  //     audioRef.current.volume = volume;
+  //   }
+  // }, [volume]);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 max-w-xl mx-auto">
