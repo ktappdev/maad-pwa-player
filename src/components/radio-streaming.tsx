@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Pause, Play, Volume2, VolumeX } from "lucide-react"
 
-export default function Component() {
+export function RadioStreaming() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [volume, setVolume] = useState(1)
   const [isMuted, setIsMuted] = useState(false)
