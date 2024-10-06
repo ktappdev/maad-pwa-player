@@ -30,13 +30,13 @@ export default function Home() {
     }
   };
 
-  const adjustVolume = (adjustment: number) => {
-    if (audioRef.current) {
-      const newVolume = Math.max(0, Math.min(1, volume + adjustment));
-      audioRef.current.volume = newVolume;
-      setVolume(newVolume);
-    }
-  };
+  // const adjustVolume = (adjustment: number) => {
+  //   if (audioRef.current) {
+  //     const newVolume = Math.max(0, Math.min(1, volume + adjustment));
+  //     audioRef.current.volume = newVolume;
+  //     setVolume(newVolume);
+  //   }
+  // };
 
   useEffect(() => {
     if (audioRef.current) {
