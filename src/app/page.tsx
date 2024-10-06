@@ -18,6 +18,7 @@ export default function Home() {
     }
   }, [emblaApi]);
 
+
   const togglePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -44,13 +45,13 @@ export default function Home() {
   }, [volume]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24">
-      <div className="container mx-auto">
+    <main className="flex min-h-screen flex-col items-center p-4 max-w-xl mx-auto">
+      <div className="flex flex-col w-full h-screen">
         <div className="flex justify-center mb-8">
           <Image src="/logo.png" alt="Radio Streaming" width={100} height={100} />
         </div>
 
-        <div className="mb-8">
+        <div className="mb-8 h-full">
           <div className="w-full max-w-xs mx-auto overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {['/img/01.jpeg', '/img/02.jpeg', '/img/03.jpeg'].map((src, index) => (
@@ -65,15 +66,20 @@ export default function Home() {
         </div>
 
         <audio ref={audioRef} src="https://stream.lugetech.com/stream" />
+        <div className="flex items-center justify-center w-full mb-8">
+          <p className="text-center text-gray-300">
+            Go to main sute
+          </p>
+        </div>
 
-        <div className="fixed bottom-4 right-4 flex items-center space-x-2">
+        <div className="flex items-center justify-center w-full mb-8">
           <button onClick={togglePlayPause} className="bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600 transition-colors">
             {isPlaying ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
