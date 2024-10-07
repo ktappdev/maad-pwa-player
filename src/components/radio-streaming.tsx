@@ -19,7 +19,7 @@ interface CarouselCardProps {
 
 const CarouselCard: React.FC<CarouselCardProps> = ({ imageSrc, title, subtitle }) => (
   <div className="relative w-full aspect-video">
-    <Image src={imageSrc} alt={title} layout="fill" objectFit="cover" className="rounded-lg" />
+    <Image src={imageSrc} alt={title} fill={true} className="rounded-lg object-cover " />
     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
       <h2 className="text-white text-xl font-bold mb-1">{title}</h2>
       <p className="text-gray-200 text-sm">{subtitle}</p>
