@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import SafariInstallGuide from "./SafariInstallGuide";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -23,12 +24,10 @@ export default function PWAInstaller() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState<boolean>(false);
+  const [isSafari, setIsSafari] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("PWAInstaller component mounted");
-
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-      console.log("beforeinstallprompt event fired");
       e.preventDefault();
       setDeferredPrompt(e);
       setIsInstallable(true);
@@ -39,45 +38,22 @@ export default function PWAInstaller() {
       handleBeforeInstallPrompt as EventListener,
     );
 
-    // Check if the app is already in standalone mode
+    // Check if it's Safari on iOS or Mac
+    const isSafariOnApple =
+      /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
+      (navigator.platform.indexOf("Mac") > -1 ||
+        /iPad|iPhone|iPod/.test(navigator.userAgent));
+    setIsSafari(isSafariOnApple);
+
+    // Check if the app is already in standalone mode (installed)
     const isStandalone = window.matchMedia(
       "(display-mode: standalone)",
     ).matches;
-    console.log("Is app in standalone mode:", isStandalone);
-
-    // Check if it's iOS and not in standalone mode
-    const isIOS =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window);
-    console.log("Is iOS device:", isIOS);
-
-    const isInStandaloneMode =
-      "standalone" in (window.navigator as NavigatorWithStandalone) &&
-      (window.navigator as NavigatorWithStandalone).standalone === true;
-    console.log("Is in standalone mode (iOS):", isInStandaloneMode);
-
-    const shouldShowInstaller = !isStandalone && !(isIOS && isInStandaloneMode);
-    console.log("Should show installer:", shouldShowInstaller);
-
-    setIsInstallable(shouldShowInstaller);
-
-    // Log PWA-related details
-    console.log("Navigator:", navigator.userAgent);
-    console.log("Window object:", window);
-    if ("serviceWorker" in navigator) {
-      console.log("Service Worker is supported");
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        console.log("Service Worker registrations:", registrations);
-      });
-    } else {
-      console.log("Service Worker is not supported");
+    if (isStandalone) {
+      setIsInstallable(false);
     }
 
-    // Check for manifest
-    const manifestLink = document.querySelector('link[rel="manifest"]');
-    console.log("Manifest link found:", !!manifestLink);
-
     return () => {
-      console.log("PWAInstaller component unmounting");
       window.removeEventListener(
         "beforeinstallprompt",
         handleBeforeInstallPrompt as EventListener,
@@ -86,22 +62,14 @@ export default function PWAInstaller() {
   }, []);
 
   const handleInstallClick = async () => {
-    console.log("Install button clicked");
-    if (!deferredPrompt) {
-      console.log("No deferred prompt available");
-      return;
-    }
+    if (!deferredPrompt) return;
 
     try {
-      console.log("Prompting for installation");
       await deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
 
       if (choiceResult.outcome === "accepted") {
-        console.log("User accepted the install prompt");
         setIsInstallable(false);
-      } else {
-        console.log("User dismissed the install prompt");
       }
     } catch (error) {
       console.error("Error during installation:", error);
@@ -110,34 +78,33 @@ export default function PWAInstaller() {
     }
   };
 
-  console.log(
-    "Rendering PWAInstaller. isInstallable:",
-    isInstallable,
-    "deferredPrompt:",
-    !!deferredPrompt,
-  );
-
-  if (!isInstallable) {
-    console.log("App is not installable, returning null");
-    return null; // Don't show anything if the app is not installable
+  if (!isInstallable && !isSafari) {
+    return null;
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto mt-16">
-      <CardHeader>
-        <CardTitle>Install Our App</CardTitle>
-        <CardDescription>
-          Get quick access and a better experience
+    <Card className="w-full max-w-md mx-auto mt-16 bg-gray-800 text-white border-gray-700 shadow-lg">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-bold text-purple-400">
+          Install Our App
+        </CardTitle>
+        <CardDescription className="text-gray-400">
+          {isSafari
+            ? "Use Chrome to install our app or follow the steps below to install with Safari"
+            : "Get quick access and a better experience"}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Button
-          onClick={handleInstallClick}
-          disabled={!deferredPrompt}
-          className="w-full"
-        >
-          {deferredPrompt ? "Install App" : "Installation not available"}
-        </Button>
+        {isSafari ? (
+          <SafariInstallGuide />
+        ) : deferredPrompt ? (
+          <Button
+            onClick={handleInstallClick}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Install App
+          </Button>
+        ) : null}
       </CardContent>
     </Card>
   );
