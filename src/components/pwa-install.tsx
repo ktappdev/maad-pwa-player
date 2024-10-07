@@ -16,10 +16,6 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
-interface NavigatorWithStandalone extends Navigator {
-  standalone?: boolean;
-}
-
 export default function PWAInstaller() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);

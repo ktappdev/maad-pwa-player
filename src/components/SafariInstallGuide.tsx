@@ -21,9 +21,9 @@ const SafariInstallGuide: React.FC = () => {
           </h3>
           <ol className="list-decimal list-inside text-gray-300 space-y-2">
             <li>Tap the Share button in Safari</li>
-            <li>Scroll down and tap "Add to Home Screen"</li>
+            <li>Scroll down and tap &ldquo;Add to Home Screen&rdquo;</li>
             <li>Enter a name for the app (optional)</li>
-            <li>Tap "Add" in the top right corner</li>
+            <li>Tap &ldquo;Add&rdquo; in the top right corner</li>
           </ol>
           <p className="mt-4 text-gray-400 italic">
             The app icon will appear on your home screen.
