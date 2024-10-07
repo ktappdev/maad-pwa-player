@@ -8,6 +8,23 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Pause, Play, Volume2, VolumeX } from "lucide-react"
+import Link from "next/link"
+
+interface CarouselCardProps {
+  imageSrc: string
+  title: string
+  subtitle: string
+}
+
+const CarouselCard: React.FC<CarouselCardProps> = ({ imageSrc, title, subtitle }) => (
+  <div className="relative w-full aspect-video">
+    <Image src={imageSrc} alt={title} layout="fill" objectFit="cover" className="rounded-lg" />
+    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+      <h2 className="text-white text-xl font-bold mb-1">{title}</h2>
+      <p className="text-gray-200 text-sm">{subtitle}</p>
+    </div>
+  </div>
+)
 
 export function RadioStreaming() {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -54,6 +71,24 @@ export function RadioStreaming() {
     }
   }, [volume])
 
+  const carouselCards: CarouselCardProps[] = [
+    {
+      imageSrc: "/img/01.jpeg",
+      title: "Holy Ghost Power and Life Show",
+      subtitle: "Hosted by DJ Skatta Weekdays 5am to 7am",
+    },
+    {
+      imageSrc: "/img/02.jpeg",
+      title: "The Meltdown",
+      subtitle: "Hosted By Annmarie - Weekdays 6pm to 7pm",
+    },
+    {
+      imageSrc: "/img/03.jpeg",
+      title: "The Rush Hour Drive",
+      subtitle: "Hosted by N.E.B592 Weekdays 3pm to 6pm",
+    },
+  ]
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-gray-900 to-gray-800">
       <Card className="w-full max-w-md mx-auto overflow-hidden">
@@ -64,9 +99,9 @@ export function RadioStreaming() {
 
           <div className="mb-6 overflow-hidden rounded-lg" ref={emblaRef}>
             <div className="flex">
-              {["/img/01.jpeg", "/img/02.jpeg", "/img/03.jpeg"].map((src, index) => (
+              {carouselCards.map((card, index) => (
                 <div key={index} className="flex-[0_0_100%] min-w-0">
-                  <Image src={src} alt={`Advertisement ${index + 1}`} width={800} height={400} className="w-full h-auto" />
+                  <CarouselCard {...card} />
                 </div>
               ))}
             </div>
@@ -95,9 +130,9 @@ export function RadioStreaming() {
 
           <div className="text-center">
             <p className="text-sm text-gray-400 mb-2">Now Playing: Live Stream</p>
-            <Button variant="link" className="text-primary hover:text-primary-foreground transition-colors">
+            <Link href="https://maad97.com" variant="link" className="text-primary hover:text-primary-foreground transition-colors">
               Go to main site
-            </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
