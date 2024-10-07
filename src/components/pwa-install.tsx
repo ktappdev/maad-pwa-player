@@ -25,7 +25,10 @@ export default function PWAInstaller() {
   const [isInstallable, setIsInstallable] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log("PWAInstaller component mounted");
+
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+      console.log("beforeinstallprompt event fired");
       e.preventDefault();
       setDeferredPrompt(e);
       setIsInstallable(true);
@@ -40,17 +43,41 @@ export default function PWAInstaller() {
     const isStandalone = window.matchMedia(
       "(display-mode: standalone)",
     ).matches;
+    console.log("Is app in standalone mode:", isStandalone);
 
     // Check if it's iOS and not in standalone mode
     const isIOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window);
+    console.log("Is iOS device:", isIOS);
+
     const isInStandaloneMode =
       "standalone" in (window.navigator as NavigatorWithStandalone) &&
       (window.navigator as NavigatorWithStandalone).standalone === true;
+    console.log("Is in standalone mode (iOS):", isInStandaloneMode);
 
-    setIsInstallable(!isStandalone && !(isIOS && isInStandaloneMode));
+    const shouldShowInstaller = !isStandalone && !(isIOS && isInStandaloneMode);
+    console.log("Should show installer:", shouldShowInstaller);
+
+    setIsInstallable(shouldShowInstaller);
+
+    // Log PWA-related details
+    console.log("Navigator:", navigator.userAgent);
+    console.log("Window object:", window);
+    if ("serviceWorker" in navigator) {
+      console.log("Service Worker is supported");
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        console.log("Service Worker registrations:", registrations);
+      });
+    } else {
+      console.log("Service Worker is not supported");
+    }
+
+    // Check for manifest
+    const manifestLink = document.querySelector('link[rel="manifest"]');
+    console.log("Manifest link found:", !!manifestLink);
 
     return () => {
+      console.log("PWAInstaller component unmounting");
       window.removeEventListener(
         "beforeinstallprompt",
         handleBeforeInstallPrompt as EventListener,
@@ -59,9 +86,14 @@ export default function PWAInstaller() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    console.log("Install button clicked");
+    if (!deferredPrompt) {
+      console.log("No deferred prompt available");
+      return;
+    }
 
     try {
+      console.log("Prompting for installation");
       await deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
 
@@ -78,7 +110,15 @@ export default function PWAInstaller() {
     }
   };
 
+  console.log(
+    "Rendering PWAInstaller. isInstallable:",
+    isInstallable,
+    "deferredPrompt:",
+    !!deferredPrompt,
+  );
+
   if (!isInstallable) {
+    console.log("App is not installable, returning null");
     return null; // Don't show anything if the app is not installable
   }
 

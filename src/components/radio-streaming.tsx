@@ -27,11 +27,11 @@ const CarouselCard: React.FC<CarouselCardProps> = ({
       src={imageSrc}
       alt={title}
       fill={true}
-      className="rounded-lg object-cover "
+      className="rounded-lg object-cover"
     />
     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
       <h2 className="text-white text-xl font-bold mb-1">{title}</h2>
-      <p className="text-gray-200 text-sm">{subtitle}</p>
+      <p className="text-gray-300 text-sm">{subtitle}</p>
     </div>
   </div>
 );
@@ -100,8 +100,8 @@ export function RadioStreaming() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-gray-900 to-gray-800">
-      <Card className="w-full max-w-md mx-auto overflow-hidden">
+    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-black">
+      <Card className="w-full max-w-md mx-auto overflow-hidden bg-gray-900 border-gray-800">
         <CardContent className="p-6">
           <div className="flex justify-center mb-6">
             <Image
@@ -123,37 +123,47 @@ export function RadioStreaming() {
             </div>
           </div>
 
-          <audio ref={audioRef} src="https://stream.lugetech.com/stream" />
+          <audio
+            ref={audioRef}
+            src="https://streaming.broadcastradio.com/brutal"
+          />
 
           <div className="flex items-center justify-between mb-4">
             <Button
               variant="outline"
               size="icon"
               onClick={togglePlayPause}
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 rounded-full bg-gray-800 hover:bg-gray-700 border-gray-700"
             >
               {isPlaying ? (
-                <Pause className="h-6 w-6" />
+                <Pause className="h-6 w-6 text-white" />
               ) : (
-                <Play className="h-6 w-6" />
+                <Play className="h-6 w-6 text-white" />
               )}
             </Button>
             <div className="flex items-center space-x-2 flex-1 mx-4">
-              <Button variant="outline" size="icon" onClick={toggleMute}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleMute}
+                className="bg-gray-800 hover:bg-gray-700 border-gray-700"
+              >
                 {isMuted ? (
-                  <VolumeX className="h-4 w-4" />
+                  <VolumeX className="h-4 w-4 text-white" />
                 ) : (
-                  <Volume2 className="h-4 w-4" />
+                  <Volume2 className="h-4 w-4 text-white" />
                 )}
               </Button>
-              <Slider
-                value={[isMuted ? 0 : volume]}
-                min={0}
-                max={1}
-                step={0.01}
-                onValueChange={adjustVolume}
-                className="flex-1"
-              />
+              <div className="flex-1 px-2 py-1 bg-gray-800 rounded-full">
+                <Slider
+                  value={[isMuted ? 0 : volume]}
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  onValueChange={adjustVolume}
+                  className="flex-1"
+                />
+              </div>
             </div>
           </div>
 
@@ -163,7 +173,7 @@ export function RadioStreaming() {
             </p>
             <Link
               href="https://maad97.com"
-              className="text-primary hover:text-primary-foreground transition-colors"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
             >
               Go to main site
             </Link>
