@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Pause, Play, Volume2, VolumeX } from "lucide-react"
+import PWAInstaller from "@/components/pwa-install"
 import Link from "next/link"
 
 interface CarouselCardProps {
@@ -136,6 +137,7 @@ export function RadioStreaming() {
           </div>
         </CardContent>
       </Card>
+      <PWAInstaller />
     </div>
   )
 }
